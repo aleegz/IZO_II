@@ -249,40 +249,90 @@ INSERT INTO ventas(id_venta, fecha, id_cliente, id_forma_pago, importe)
 VALUES
 (@id_venta, @fecha, @id_cliente, @id_forma_pago, @importe);
 
+CREATE PROCEDURE spu_cancelarVenta
+@id_venta INT
+AS
+DELETE FROM detalle_ventas WHERE id_venta = @id_venta
+DELETE FROM ventas WHERE id_venta = @id_venta
+
 -- CREACIÓN DE SPU PARA DETALLE DE VENTAS --
 
 CREATE PROCEDURE spu_detalle_venta
 @id_venta INT,
+@codigo INT,
 @talle CHAR(5),
 @color NVARCHAR(20),
 @precio DEC(18, 2),
 @cantidad INT,
 @precio_r DEC(18, 2)
 AS
-INSERT INTO detalle_ventas(id_venta, talle, color, precio, cantidad, precio_r)
+INSERT INTO detalle_ventas(id_venta, codigo, talle, color, precio, cantidad, precio_r)
 VALUES
-(@id_venta, @talle, @color, @precio, @cantidad, @precio_r);
+(@id_venta, @codigo, @talle, @color, @precio, @cantidad, @precio_r);
+
+------------------------------------------
+
+CREATE PROCEDURE spu_importeTotal 
+@id_venta INT 
+AS
+SELECT SUM(precio_r) FROM detalle_ventas WHERE id_venta = @id_venta
 
 -- CREACIÓN DE SPU PARA AUMENTO MASIVO DE PRECIOS POR MARCA --
 
 CREATE PROCEDURE spu_aumento_masivo
 @id_marca INT,
-@porcentaje INT
+@porcentaje DEC
 AS
-UPDATE prendas SET precio = precio * (@porcentaje / 100)
+UPDATE prendas SET precio = precio * (1 + @porcentaje / 100)
 WHERE id_marca = @id_marca;
 
 -- CREACIÓN DE SPU PARA LISTA DE PRECIOS --
 
--- misma que mostrar prendas (?
+CREATE PROCEDURE spu_lista_precios
+AS 
+SELECT codigo AS CÓDIGO, color AS COLOR, descrip_prenda AS DESCRIPCIÓN, precio AS PRECIO FROM prendas;
 
--- CREACIÓN DE SPU PARA VENTAS POR FECHA (EN PROCESO) --
+-- CREACIÓN DE SPU PARA VENTAS POR FECHA --
 
 CREATE PROCEDURE spu_ventas_fecha
-@id_forma_pago INT
+@fechadesde DATETIME,
+@fechahasta DATETIME
 AS
-SELECT fecha AS FECHA, id_venta AS ID, razon_social AS RAZON_SOCIAL, importe AS IMPORTE FROM ventas
-INNER JOIN razon_social ON razon_social.id_cliente = razon_social.id_cliente;
+SELECT id_venta AS ID, fecha AS FECHA, id_cliente AS CLIENTE, formas_pago.descrip_forma_pago AS FORMA_PAGO FROM ventas
+INNER JOIN formas_pago ON ventas.id_forma_pago = formas_pago.id_forma_pago
+WHERE fecha BETWEEN @fechadesde AND @fechahasta
+
+-- CREACIÓN DE SPU PARA VENTAS POR CLIENTE --
+
+CREATE PROCEDURE spu_ventas_cliente
+@id_cliente INT
+AS
+SELECT id_venta AS ID, fecha AS FECHA, id_cliente AS CLIENTE, descrip_forma_pago AS FORMA_PAGO, importe AS IMPORTE FROM ventas
+INNER JOIN formas_pago ON ventas.id_forma_pago = formas_pago.id_forma_pago
+WHERE id_cliente = @id_cliente	
+
+-- CREACIÓN DE SPU PARA DETALLE DE PRENDAS --
+
+CREATE PROCEDURE spu_detalle_prenda
+AS
+SELECT codigo AS CODIGO, talle AS TALLE, color AS COLOR, precio AS PRECIO, descrip_prenda AS DESCRIPCION FROM prendas
+
+-- CREACIÓN DE SPU PARA FACTURAS --
+
+CREATE PROCEDURE spu_factura
+@id_venta INT
+AS
+SELECT id_venta AS ID, fecha AS FECHA, clientes.id_cliente AS N_CLIENTE, razon_social AS RAZON_SOCIAL, telefono AS TELEFONO, descrip_forma_pago AS FORMA_PAGO, importe AS IMPORTE FROM ventas
+INNER JOIN formas_pago ON ventas.id_forma_pago = formas_pago.id_forma_pago
+INNER JOIN clientes ON ventas.id_cliente = clientes.id_cliente
+WHERE id_venta = @id_venta
+
+CREATE PROCEDURE spu_detalle_factura
+@id_venta INT
+AS
+SELECT detalle_ventas.codigo AS CODIGO, detalle_ventas.talle AS TALLE, detalle_ventas.color AS COLOR, descrip_prenda AS DESCRIPCION, detalle_ventas.precio AS PRECIO_UNITARIO, cantidad AS CANTIDAD, precio_r AS SUBTOTAL FROM detalle_ventas
+INNER JOIN prendas ON detalle_ventas.codigo = prendas.codigo
+WHERE id_venta = @id_venta
 
 -- CARGAR DATOS EN TABLAS --
 
@@ -341,3 +391,19 @@ VALUES
 (3, 3, 'M', 'Blanco', 20000, 1, 20000),
 (4, 4, 'M', 'Blanco', 5000, 1, 5000),
 (5, 5, 'M', 'Blanco', 40000, 1, 40000)
+
+-- CREACIÓN DE TRIGGERS --
+
+GO
+CREATE TRIGGER [dbo].[tr_bajaStock] ON [dbo].[detalle_ventas]
+FOR INSERT AS 
+UPDATE a SET a.stock = a.stock - i.cantidad
+FROM prendas a
+JOIN inserted i ON a.codigo = i.codigo
+
+GO
+CREATE TRIGGER [dbo].[tr_subaStock] ON [dbo].[detalle_ventas]
+FOR DELETE AS 
+UPDATE a SET a.stock = a.stock + i.cantidad
+FROM prendas a
+JOIN deleted i ON a.codigo = i.codigo

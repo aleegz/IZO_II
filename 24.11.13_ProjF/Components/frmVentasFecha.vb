@@ -2,8 +2,12 @@
 
     'Llenar ventas en datagridview
     Private Sub llenarVentas()
-        MsgBox(wFechaDesde)
         Dim sql As String = "EXEC spu_ventas_fecha '" & wFechaDesde & "', '" & wFechaHasta & "'"
+        'Dim sql As String = $"EXEC spu_ventas_fecha {wFechaDesde}, {wFechaHasta}"
+        'Dim sql As String = $"EXEC spu_ventas_fecha " & $"{wFechaDesde}" & "," & $"{wFechaHasta}"
+
+
+        MsgBox(sql)
         cmd.CommandText = sql
         Dim adp As New SqlClient.SqlDataAdapter(sql, conexion.conexion)
         Dim ds As New DataSet

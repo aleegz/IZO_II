@@ -13,9 +13,27 @@
         Me.dgvVentas.DataSource = ds.Tables("ventas")
     End Sub
 
-    Private Function elegirCli()
-        Dim input = InputBox("Indique el N° de identificación del cliente")
-        wCliente = input
+    Private Function elegirCli() As Integer
+        Dim input As String
+        Dim id_cliente As Integer
+        Dim validInput As Boolean = False
+
+        Do
+            input = InputBox("Indique el N° de identificación del cliente", "Ventas por Cliente")
+
+            If String.IsNullOrWhiteSpace(input) Then
+                MessageBox.Show("El proceso ha sido cancelado.", "Cancelado", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Return -1
+            End If
+
+            If Integer.TryParse(input, id_cliente) AndAlso id_cliente > 0 Then
+                validInput = True
+            Else
+                MessageBox.Show("Por favor ingrese un número entero válido mayor que 0.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End If
+        Loop While Not validInput
+
+        Return id_cliente
     End Function
 
     Private Sub btnModificar_Click(sender As Object, e As EventArgs) Handles btnModificar.Click
@@ -28,12 +46,14 @@
     End Sub
 
     Private Sub btnVentasCli_Click(sender As Object, e As EventArgs) Handles btnVentasCli.Click
-        elegirCli()
-        Dim frm As New frmVentasCli
-        frm.Show()
-    End Sub
+        Dim clienteId As Integer = elegirCli()
 
-    Private Sub dgvVentas_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvVentas.CellContentClick
-
+        If clienteId <> -1 Then
+            wCliente = clienteId
+            Dim frm As New frmVentasCli
+            frm.Show()
+        Else
+            MessageBox.Show("No se ha seleccionado un cliente válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
     End Sub
 End Class

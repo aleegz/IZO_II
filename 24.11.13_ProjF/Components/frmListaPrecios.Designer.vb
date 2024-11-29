@@ -24,13 +24,23 @@ Partial Class frmListaPrecios
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Me.ReportViewer1 = New Microsoft.Reporting.WinForms.ReportViewer()
-        Me.Tienda_ropaDataSet1 = New Project_Final.tienda_ropaDataSet1()
         Me.SpulistapreciosBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.Tienda_ropaDataSet1 = New Project_Final.tienda_ropaDataSet1()
+        Me.ReportViewer1 = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.Spu_lista_preciosTableAdapter = New Project_Final.tienda_ropaDataSet1TableAdapters.spu_lista_preciosTableAdapter()
-        CType(Me.Tienda_ropaDataSet1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.SpulistapreciosBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Tienda_ropaDataSet1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
+        '
+        'SpulistapreciosBindingSource
+        '
+        Me.SpulistapreciosBindingSource.DataMember = "spu_lista_precios"
+        Me.SpulistapreciosBindingSource.DataSource = Me.Tienda_ropaDataSet1
+        '
+        'Tienda_ropaDataSet1
+        '
+        Me.Tienda_ropaDataSet1.DataSetName = "tienda_ropaDataSet1"
+        Me.Tienda_ropaDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
         'ReportViewer1
         '
@@ -45,16 +55,6 @@ Partial Class frmListaPrecios
         Me.ReportViewer1.Size = New System.Drawing.Size(800, 450)
         Me.ReportViewer1.TabIndex = 0
         '
-        'Tienda_ropaDataSet1
-        '
-        Me.Tienda_ropaDataSet1.DataSetName = "tienda_ropaDataSet1"
-        Me.Tienda_ropaDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
-        '
-        'SpulistapreciosBindingSource
-        '
-        Me.SpulistapreciosBindingSource.DataMember = "spu_lista_precios"
-        Me.SpulistapreciosBindingSource.DataSource = Me.Tienda_ropaDataSet1
-        '
         'Spu_lista_preciosTableAdapter
         '
         Me.Spu_lista_preciosTableAdapter.ClearBeforeFill = True
@@ -67,8 +67,8 @@ Partial Class frmListaPrecios
         Me.Controls.Add(Me.ReportViewer1)
         Me.Name = "frmListaPrecios"
         Me.Text = "frmListaPrecios"
-        CType(Me.Tienda_ropaDataSet1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.SpulistapreciosBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Tienda_ropaDataSet1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub

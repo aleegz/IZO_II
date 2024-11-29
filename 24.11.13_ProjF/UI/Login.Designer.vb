@@ -22,6 +22,7 @@ Partial Class Login
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Login))
         Me.txtUser = New System.Windows.Forms.TextBox()
         Me.txtPsw = New System.Windows.Forms.TextBox()
         Me.dgvUsuarios = New System.Windows.Forms.DataGridView()
@@ -34,8 +35,10 @@ Partial Class Login
         '
         'txtUser
         '
+        Me.txtUser.BackColor = System.Drawing.SystemColors.WindowFrame
         Me.txtUser.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.txtUser.Font = New System.Drawing.Font("Noto Sans", 12.0!)
+        Me.txtUser.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!)
+        Me.txtUser.ForeColor = System.Drawing.SystemColors.Window
         Me.txtUser.ImeMode = System.Windows.Forms.ImeMode.[On]
         Me.txtUser.Location = New System.Drawing.Point(211, 117)
         Me.txtUser.Multiline = True
@@ -46,8 +49,10 @@ Partial Class Login
         '
         'txtPsw
         '
+        Me.txtPsw.BackColor = System.Drawing.SystemColors.WindowFrame
         Me.txtPsw.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.txtPsw.Font = New System.Drawing.Font("Noto Sans", 12.0!)
+        Me.txtPsw.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!)
+        Me.txtPsw.ForeColor = System.Drawing.SystemColors.Window
         Me.txtPsw.ImeMode = System.Windows.Forms.ImeMode.[On]
         Me.txtPsw.Location = New System.Drawing.Point(211, 188)
         Me.txtPsw.Multiline = True
@@ -125,9 +130,10 @@ Partial Class Login
         Me.Controls.Add(Me.dgvUsuarios)
         Me.Controls.Add(Me.txtPsw)
         Me.Controls.Add(Me.txtUser)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "Login"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Home"
+        Me.Text = "Iniciar Sesión"
         CType(Me.dgvUsuarios, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()

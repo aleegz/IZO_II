@@ -196,21 +196,36 @@
         txtBox.BackColor = SystemColors.Window
     End Sub
 
-    Private Function aumentar()
-        Dim input = InputBox("Indique el porcentaje de aumento")
+    Private Function aumentar() As Boolean
+        Dim input As String = InputBox("Indique el porcentaje de aumento")
+
+        ' Validación input es un número válido
+        Dim porcentajeAumento As Decimal
+        If Not Decimal.TryParse(input, porcentajeAumento) OrElse porcentajeAumento <= 0 Then
+            MsgBox("Por favor ingrese un porcentaje de aumento válido mayor que 0.")
+            Return False
+        End If
+
+        ' Uso de parámetros para evitar inyecciones SQL
+        Dim sql As String = "EXEC spu_aumento_masivo @MarcaID, @PorcentajeAumento"
 
         cmd.Connection = conexion.conexion
         cmd.CommandType = CommandType.Text
-        Dim sql As String = $"EXEC spu_aumento_masivo {Me.dgvMarcas.CurrentRow.Cells(0).Value}, {input}"
         cmd.CommandText = sql
-        MsgBox($"Se aumentarán los precios de las prendas de la marca {Me.dgvMarcas.CurrentRow.Cells(1).Value} en un {input}%")
+
+        cmd.Parameters.Clear()
+        cmd.Parameters.AddWithValue("@MarcaID", Me.dgvMarcas.CurrentRow.Cells(0).Value)
+        cmd.Parameters.AddWithValue("@PorcentajeAumento", porcentajeAumento)
+
+        MsgBox($"Se aumentarán los precios de las prendas de la marca {Me.dgvMarcas.CurrentRow.Cells(1).Value} en un {porcentajeAumento}%")
 
         Try
             cmd.ExecuteNonQuery()
             MsgBox("PRECIOS AUMENTADOS CON ÉXITO")
             Return True
         Catch ex As Exception
-            MsgBox(ex.ToString)
+            MsgBox("Error al aumentar los precios: " & ex.Message)
+            Return False
         End Try
     End Function
 

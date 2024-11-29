@@ -3,9 +3,9 @@
 
     Public dr As SqlClient.SqlDataReader
 
-    Public conexion As New SqlClient.SqlConnection("Data Source=IZO_024\SQLEXPRESS;Initial Catalog=tienda_ropa;Integrated Security=false;user id=sa;password=izo9045")
+    'Public conexion As New SqlClient.SqlConnection("Data Source=IZO_024\SQLEXPRESS;Initial Catalog=tienda_ropa;Integrated Security=false;user id=sa;password=izo9045")
 
-    'Public conexion As New SqlClient.SqlConnection("Data Source=DESKTOP-G7FKGJ6\SQLEXPRESS;Initial Catalog=tienda_ropa;Integrated Security=true")
+    Public conexion As New SqlClient.SqlConnection("Data Source=DESKTOP-G7FKGJ6\SQLEXPRESS;Initial Catalog=tienda_ropa;Integrated Security=true")
 
     Public Sub conectar() 'FUNCION PARA ABRIR LA CONEXIONv
 

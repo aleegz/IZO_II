@@ -39,14 +39,11 @@ Partial Class frmCrearVenta
         Me.txtDescrip = New System.Windows.Forms.TextBox()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.dgvDetalle = New System.Windows.Forms.DataGridView()
-        Me.btnAgregar = New System.Windows.Forms.Button()
         Me.txtPrUn = New System.Windows.Forms.TextBox()
         Me.Label12 = New System.Windows.Forms.Label()
         Me.txtCant = New System.Windows.Forms.TextBox()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.btnClientes = New System.Windows.Forms.Button()
-        Me.btnConfirmar = New System.Windows.Forms.Button()
-        Me.btnCancelar = New System.Windows.Forms.Button()
         Me.LabelSubTotal = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.LabelFecha = New System.Windows.Forms.Label()
@@ -55,9 +52,12 @@ Partial Class frmCrearVenta
         Me.Label7 = New System.Windows.Forms.Label()
         Me.txtColor = New System.Windows.Forms.TextBox()
         Me.Label6 = New System.Windows.Forms.Label()
-        Me.btnBuscar = New System.Windows.Forms.Button()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.txtCod = New System.Windows.Forms.TextBox()
+        Me.btnBuscar = New System.Windows.Forms.Button()
+        Me.btnAgregar = New System.Windows.Forms.Button()
+        Me.btnCancelar = New System.Windows.Forms.Button()
+        Me.btnConfirmar = New System.Windows.Forms.Button()
         Me.PanelFormulario.SuspendLayout()
         CType(Me.dgvDetalle, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -269,15 +269,6 @@ Partial Class frmCrearVenta
         Me.dgvDetalle.Size = New System.Drawing.Size(936, 252)
         Me.dgvDetalle.TabIndex = 42
         '
-        'btnAgregar
-        '
-        Me.btnAgregar.Location = New System.Drawing.Point(410, 152)
-        Me.btnAgregar.Name = "btnAgregar"
-        Me.btnAgregar.Size = New System.Drawing.Size(127, 35)
-        Me.btnAgregar.TabIndex = 40
-        Me.btnAgregar.Text = "Agregar a la compra"
-        Me.btnAgregar.UseVisualStyleBackColor = True
-        '
         'txtPrUn
         '
         Me.txtPrUn.Location = New System.Drawing.Point(362, 116)
@@ -324,24 +315,6 @@ Partial Class frmCrearVenta
         Me.btnClientes.TabIndex = 35
         Me.btnClientes.Text = "..."
         Me.btnClientes.UseVisualStyleBackColor = True
-        '
-        'btnConfirmar
-        '
-        Me.btnConfirmar.Location = New System.Drawing.Point(843, 457)
-        Me.btnConfirmar.Name = "btnConfirmar"
-        Me.btnConfirmar.Size = New System.Drawing.Size(95, 35)
-        Me.btnConfirmar.TabIndex = 34
-        Me.btnConfirmar.Text = "Confirmar"
-        Me.btnConfirmar.UseVisualStyleBackColor = True
-        '
-        'btnCancelar
-        '
-        Me.btnCancelar.Location = New System.Drawing.Point(742, 457)
-        Me.btnCancelar.Name = "btnCancelar"
-        Me.btnCancelar.Size = New System.Drawing.Size(95, 35)
-        Me.btnCancelar.TabIndex = 33
-        Me.btnCancelar.Text = "Cancelar"
-        Me.btnCancelar.UseVisualStyleBackColor = True
         '
         'LabelSubTotal
         '
@@ -430,15 +403,6 @@ Partial Class frmCrearVenta
         Me.Label6.TabIndex = 25
         Me.Label6.Text = "Color"
         '
-        'btnBuscar
-        '
-        Me.btnBuscar.Location = New System.Drawing.Point(131, 115)
-        Me.btnBuscar.Name = "btnBuscar"
-        Me.btnBuscar.Size = New System.Drawing.Size(36, 21)
-        Me.btnBuscar.TabIndex = 23
-        Me.btnBuscar.Text = "..."
-        Me.btnBuscar.UseVisualStyleBackColor = True
-        '
         'Label5
         '
         Me.Label5.AutoSize = True
@@ -457,6 +421,57 @@ Partial Class frmCrearVenta
         Me.txtCod.Name = "txtCod"
         Me.txtCod.Size = New System.Drawing.Size(92, 20)
         Me.txtCod.TabIndex = 21
+        '
+        'btnBuscar
+        '
+        Me.btnBuscar.Location = New System.Drawing.Point(131, 115)
+        Me.btnBuscar.Name = "btnBuscar"
+        Me.btnBuscar.Size = New System.Drawing.Size(36, 21)
+        Me.btnBuscar.TabIndex = 23
+        Me.btnBuscar.Text = "..."
+        Me.btnBuscar.UseVisualStyleBackColor = True
+        '
+        'btnAgregar
+        '
+        Me.btnAgregar.BackColor = System.Drawing.Color.DarkGreen
+        Me.btnAgregar.FlatAppearance.BorderSize = 0
+        Me.btnAgregar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnAgregar.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnAgregar.ForeColor = System.Drawing.SystemColors.Control
+        Me.btnAgregar.Location = New System.Drawing.Point(394, 152)
+        Me.btnAgregar.Name = "btnAgregar"
+        Me.btnAgregar.Size = New System.Drawing.Size(159, 35)
+        Me.btnAgregar.TabIndex = 40
+        Me.btnAgregar.Text = "Agregar a la compra"
+        Me.btnAgregar.UseVisualStyleBackColor = False
+        '
+        'btnCancelar
+        '
+        Me.btnCancelar.BackColor = System.Drawing.Color.DarkRed
+        Me.btnCancelar.FlatAppearance.BorderSize = 0
+        Me.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnCancelar.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnCancelar.ForeColor = System.Drawing.SystemColors.Control
+        Me.btnCancelar.Location = New System.Drawing.Point(742, 457)
+        Me.btnCancelar.Name = "btnCancelar"
+        Me.btnCancelar.Size = New System.Drawing.Size(95, 35)
+        Me.btnCancelar.TabIndex = 33
+        Me.btnCancelar.Text = "Cancelar"
+        Me.btnCancelar.UseVisualStyleBackColor = False
+        '
+        'btnConfirmar
+        '
+        Me.btnConfirmar.BackColor = System.Drawing.Color.DarkGreen
+        Me.btnConfirmar.FlatAppearance.BorderSize = 0
+        Me.btnConfirmar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnConfirmar.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnConfirmar.ForeColor = System.Drawing.SystemColors.Control
+        Me.btnConfirmar.Location = New System.Drawing.Point(843, 457)
+        Me.btnConfirmar.Name = "btnConfirmar"
+        Me.btnConfirmar.Size = New System.Drawing.Size(95, 35)
+        Me.btnConfirmar.TabIndex = 34
+        Me.btnConfirmar.Text = "Confirmar"
+        Me.btnConfirmar.UseVisualStyleBackColor = False
         '
         'frmCrearVenta
         '
@@ -490,7 +505,6 @@ Partial Class frmCrearVenta
     Friend WithEvents cbFormaPago As ComboBox
     Friend WithEvents Label4 As Label
     Friend WithEvents PanelFormulario As Panel
-    Friend WithEvents btnBuscar As Button
     Friend WithEvents Label5 As Label
     Friend WithEvents txtCod As TextBox
     Friend WithEvents LabelSubTotal As Label
@@ -501,19 +515,20 @@ Partial Class frmCrearVenta
     Friend WithEvents Label7 As Label
     Friend WithEvents txtColor As TextBox
     Friend WithEvents Label6 As Label
-    Friend WithEvents btnConfirmar As Button
-    Friend WithEvents btnCancelar As Button
     Friend WithEvents btnClientes As Button
     Friend WithEvents txtPrUn As TextBox
     Friend WithEvents Label12 As Label
     Friend WithEvents txtCant As TextBox
     Friend WithEvents Label9 As Label
     Friend WithEvents dgvDetalle As DataGridView
-    Friend WithEvents btnAgregar As Button
     Friend WithEvents txtDescrip As TextBox
     Friend WithEvents Label11 As Label
     Friend WithEvents Label13 As Label
     Friend WithEvents LabelVenta As Label
     Friend WithEvents LabelTotal As Label
     Friend WithEvents Label15 As Label
+    Friend WithEvents btnBuscar As Button
+    Friend WithEvents btnAgregar As Button
+    Friend WithEvents btnCancelar As Button
+    Friend WithEvents btnConfirmar As Button
 End Class

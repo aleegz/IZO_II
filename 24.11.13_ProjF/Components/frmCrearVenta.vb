@@ -104,10 +104,11 @@ Public Class frmCrearVenta
 
     End Function
 
-    Private Function agregarProducto()
+    Private Function agregarProducto() As Boolean
         Dim nueva As New detalle_ventas
         Dim inputsValidos As Boolean = True
 
+        ' Validaciones de los campos
         If Not IsNumeric(Me.txtCod.Text) Then
             MessageBox.Show("Valor no válido en campo Código", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Me.txtCod.BackColor = Color.Red
@@ -144,28 +145,54 @@ Public Class frmCrearVenta
 
         nueva.id_venta = CInt(Me.LabelVenta.Text)
         nueva.codigo = CInt(Me.txtCod.Text)
-        nueva.talle = (Me.txtTal.Text.Trim())
-        nueva.color = (Me.txtColor.Text.Trim())
+        nueva.talle = Me.txtTal.Text.Trim()
+        nueva.color = Me.txtColor.Text.Trim()
         nueva.precio = CInt(Me.txtPrUn.Text)
         nueva.cantidad = CInt(Me.txtCant.Text)
         nueva.precio_r = CInt(Me.LabelSubTotal.Text)
 
         cmd.Connection = conexion.conexion
         cmd.CommandType = CommandType.Text
-        Dim sql As String = "EXEC spu_detalle_venta " & nueva.id_venta & ", " & nueva.codigo & ", " & nueva.talle & ", " & $"{nueva.color}" & ", " & nueva.precio & ", " & nueva.cantidad & ", " & nueva.precio_r & ""
-        cmd.CommandText = sql
-        MsgBox(sql)
 
-        Try
-            cmd.ExecuteNonQuery()
-            Return True
-        Catch ex As Exception
-            MsgBox(ex.ToString)
-        End Try
+        ' Verificar si ya existe un detalle con el mismo producto y venta
+        Dim sqlCheck As String = $"SELECT COUNT(*) FROM detalle_ventas WHERE id_venta = {nueva.id_venta} AND codigo = {nueva.codigo} AND talle = '{nueva.talle}' AND color = '{nueva.color}'"
+        cmd.CommandText = sqlCheck
+
+        Dim count As Integer = Convert.ToInt32(cmd.ExecuteScalar())
+
+        If count > 0 Then
+            ' Si ya existe, hacer un UPDATE sumando la cantidad
+            Dim sqlUpdate As String = $"UPDATE detalle_ventas SET cantidad = cantidad + {nueva.cantidad} WHERE id_venta = {nueva.id_venta} AND codigo = {nueva.codigo} AND talle = '{nueva.talle}' AND color = '{nueva.color}'"
+            cmd.CommandText = sqlUpdate
+            Try
+                cmd.ExecuteNonQuery()
+                MsgBox("Cantidad actualizada correctamente.")
+                Return True
+            Catch ex As Exception
+                MsgBox("Error al actualizar la cantidad: " & ex.ToString())
+                Return False
+            End Try
+        Else
+            ' Si no existe, hacer un INSERT
+            Dim sqlInsert As String = $"EXEC spu_detalle_venta {nueva.id_venta}, {nueva.codigo}, '{nueva.talle}', '{nueva.color}', {nueva.precio}, {nueva.cantidad}, {nueva.precio_r}"
+            cmd.CommandText = sqlInsert
+            Try
+                cmd.ExecuteNonQuery()
+                MsgBox("Producto agregado al detalle.")
+                Return True
+            Catch ex As Exception
+                MsgBox("Error al agregar producto: " & ex.ToString())
+                Return False
+            End Try
+        End If
     End Function
+
 
     Private Sub btnClientes_Click(sender As Object, e As EventArgs) Handles btnClientes.Click
         Dim frm As New frmClientes
+
+        frm.Size = New Size(770, 580)
+
         Me.AddOwnedForm(frm)
         frm.FormBorderStyle = FormBorderStyle.FixedSingle
         frm.ShowDialog()
